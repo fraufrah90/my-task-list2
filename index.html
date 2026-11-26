@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>يابخت اللي معاه مهام مش هيعرف ينام 😄🔥 - قائمة مهام</title>
+  <!-- تحميل خط القاهرة (Cairo) وخط تجوال (Tajawal) لدعم العربية بشكل أنيق -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet" />
+  <!-- تحميل Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ضبط الخطوط الأساسية وتخصيص الحركات الناعمة */
+    body {
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      background-color: #fffbf5;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-5px) rotate(3deg);
+      }
+    }
+
+    @keyframes softPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.04);
+      }
+    }
+
+    @keyframes sheenSlide {
+      0% {
+        transform: translateX(120%) skewX(-20deg);
+      }
+      100% {
+        transform: translateX(-220%) skewX(-20deg);
+      }
+    }
+
+    .animate-float-icon {
+      display: inline-block;
+      animation: gentleFloat 3s ease-in-out infinite;
+    }
+
+    .animate-soft-pulse {
+      animation: softPulse 2.8s ease-in-out infinite;
+    }
+
+    .task-card {
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+    }
+
+    .task-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .link-btn {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .link-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
+    .link-btn:active {
+      transform: scale(0.98);
+    }
+
+    .link-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+      transform: translateX(150%) skewX(-20deg);
+      pointer-events: none;
+    }
+
+    .link-btn:hover::after {
+      animation: sheenSlide 0.75s ease;
+    }
+
+    /* خلفية زخرفية خفيفة ومتناغمة */
+    .bg-pattern {
+      background-image:
+        radial-gradient(circle at 12% 10%, rgba(251, 146, 60, 0.14) 0%, transparent 38%),
+        radial-gradient(circle at 88% 15%, rgba(168, 85, 247, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 42%),
+        radial-gradient(circle at 20% 88%, rgba(59, 130, 246, 0.12) 0%, transparent 40%);
+    }
+  </style>
+</head>
+<body class="bg-pattern min-h-screen flex flex-col">
+
+  <!-- الهيدر الرئيسي -->
+  <header class="w-full pt-8 pb-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto text-center">
+      <!-- شارة العنوان الرئيسي -->
+      <div class="inline-block animate-soft-pulse bg-gradient-to-l from-amber-500 via-orange-500 to-rose-500 text-white rounded-3xl px-5 py-3.5 sm:px-8 sm:py-4 shadow-lg shadow-orange-500/20 border-2 border-white/70">
+        <h1 class="text-xl sm:text-3xl md:text-4xl font-black tracking-tight leading-snug">
+          يابخت اللي معاه مهام مش هيعرف ينام 😄🔥
+        </h1>
+      </div>
+
+      <!-- العنوان الفرعي -->
+      <div class="mt-4 flex flex-col items-center gap-3">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 flex items-center gap-2">
+          <span>📋</span>
+          <span>قائمة مهام</span>
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 max-w-xl">
+          اضغط على أي زر داخل الكارت لفتح اللينك مباشرة في نافذة جديدة، أو انسخ القائمة كاملة بضغطة واحدة.
+        </p>
+
+        <!-- أزرار التحكم السريعة (نسخ النص الكامل) -->
+        <div class="mt-2 flex flex-wrap items-center justify-center gap-3">
+          <button
+            id="copyAllBtn"
+            type="button"
+            onclick="copyFormattedTasks()"
+            class="link-btn inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base px-5 py-3 rounded-2xl shadow-md cursor-pointer"
+          >
+            <span id="copyIcon">📋</span>
+            <span id="copyBtnText">نسخ النص الكامل باللينكات</span>
+          </button>
+        </div>
+
+        <!-- رسالة تنبيه أنيقة عند النسخ أو حدوث خطأ -->
+        <div
+          id="statusBanner"
+          role="status"
+          aria-live="polite"
+          class="hidden mt-1 px-4 py-2 rounded-2xl text-sm font-bold border transition-all"
+        ></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- شبكة كروت المهام -->
+  <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+    <div id="tasksGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+      <!-- يتم توليد الكروت ديناميكياً عبر JavaScript مع الحفاظ على الكود واضحاً ومنظماً -->
+    </div>
+  </main>
+
+  <!-- تذييل الصفحة -->
+  <footer class="w-full py-6 px-4 text-center text-xs sm:text-sm text-slate-500 border-t border-slate-200/70 bg-white/60 backdrop-blur-sm">
+    <p>جميع الروابط تفتح في نافذة جديدة تلقائياً • قائمة مهام تفاعلية</p>
+  </footer>
+
+  <script>
+    /**
+     * بيانات المهام والروابط المرتبطة بكل مهمة
+     * كل مهمة تحتوي على رقم، عنوان، أيقونة، ألوان متناسقة للكارت والأزرار، وقائمة روابط قابلة للنقر.
+     */
+    const tasksData = [
+      {
+        id: 1,
+        numText: "١-",
+        icon: "🍳",
+        taskTitle: "مهمة المطبخ",
+        badgeBg: "bg-amber-100 text-amber-900 border-amber-300",
+        cardStyle: "bg-gradient-to-br from-amber-50 via-orange-50/70 to-white border-amber-200 hover:shadow-xl hover:shadow-amber-500/15",
+        accentColor: "text-amber-700",
+        links: [
+          {
+            label: "✨『 طواجن 』✨",
+            url: "https://link.amazon/B0fKQVdOt",
+            btnStyle: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/25"
+          }
+        ]
+      },
+      {
+        id: 2,
+        numText: "٢-",
+        icon: "🎀",
+        taskTitle: "مهمة التجميل",
+        badgeBg: "bg-pink-100 text-pink-900 border-pink-300",
+        cardStyle: "bg-gradient-to-br from-pink-50 via-rose-50/70 to-white border-pink-200 hover:shadow-xl hover:shadow-pink-500/15",
+        accentColor: "text-pink-700",
+        links: [
+          {
+            label: "💗『 توكة 』💗",
+            url: "https://link.amazon/B08Cb8S1H",
+            btnStyle: "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25"
+          }
+        ]
+      },
+      {
+        id: 3,
+        numText: "٣-",
+        icon: "💻",
+        taskTitle: "مهمة الكمبيوتر",
+        badgeBg: "bg-sky-100 text-sky-900 border-sky-300",
+        cardStyle: "bg-gradient-to-br from-sky-50 via-blue-50/70 to-white border-sky-200 hover:shadow-xl hover:shadow-sky-500/15",
+        accentColor: "text-sky-700",
+        links: [
+          {
+            label: "💙『 باد ماوس 』💙",
+            url: "https://link.amazon/B05t2h4XN",
+            btnStyle: "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/25"
+          }
+        ]
+      },
+      {
+        id: 4,
+        numText: "٤-",
+        icon: "🎮",
+        taskTitle: "مهمة الألعاب",
+        badgeBg: "bg-purple-100 text-purple-900 border-purple-300",
+        cardStyle: "bg-gradient-to-br from-purple-50 via-violet-50/70 to-white border-purple-200 hover:shadow-xl hover:shadow-purple-500/15",
+        accentColor: "text-purple-700",
+        links: [
+          {
+            label: "💜『 صلصال 』💜",
+            url: "https://link.amazon/B01y5Sjs7",
+            btnStyle: "bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-md shadow-purple-500/25"
+          }
+        ]
+      },
+      {
+        id: 5,
+        numText: "٥-",
+        icon: "🧹",
+        taskTitle: "مهمة التنظيف",
+        badgeBg: "bg-cyan-100 text-cyan-900 border-cyan-300",
+        cardStyle: "bg-gradient-to-br from-cyan-50 via-teal-50/70 to-white border-cyan-200 hover:shadow-xl hover:shadow-cyan-500/15",
+        accentColor: "text-cyan-800",
+        links: [
+          {
+            label: "🩵『 فوط سلك 』🩵 — لينك ١",
+            url: "https://link.amazon/B06aFDzLL",
+            btnStyle: "bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md shadow-cyan-500/25"
+          },
+          {
+            label: "🩵『 فوط سلك 』🩵 — لينك ٢",
+            url: "https://link.amazon/B0fWEbUjz",
+            btnStyle: "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-md shadow-teal-500/25"
+          }
+        ]
+      },
+      {
+        id: 6,
+        numText: "٦-",
+        icon: "🖊️",
+        taskTitle: "مهمة المكتبة",
+        badgeBg: "bg-yellow-100 text-yellow-900 border-yellow-300",
+        cardStyle: "bg-gradient-to-br from-yellow-50 via-amber-50/60 to-white border-yellow-300 hover:shadow-xl hover:shadow-yellow-500/15",
+        accentColor: "text-yellow-800",
+        links: [
+          {
+            label: "💛『 قلم 』💛",
+            url: "https://link.amazon/B05f0NjZT",
+            btnStyle: "bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-extrabold shadow-md shadow-yellow-500/25"
+          }
+        ]
+      },
+      {
+        id: 7,
+        numText: "٧-",
+        icon: "🔌",
+        taskTitle: "مهمة الإلكترونيات",
+        badgeBg: "bg-red-100 text-red-900 border-red-300",
+        cardStyle: "bg-gradient-to-br from-red-50 via-rose-50/60 to-white border-red-200 hover:shadow-xl hover:shadow-red-500/15",
+        accentColor: "text-red-700",
+        links: [
+          {
+            label: "❤️『 مشترك ثلاثي 』❤️",
+            url: "https://link.amazon/B0bzv9BSO",
+            btnStyle: "bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-md shadow-red-500/25"
+          }
+        ]
+      },
+      {
+        id: 8,
+        numText: "٨-",
+        icon: "🧴",
+        taskTitle: "مهمة الصيدلية",
+        badgeBg: "bg-emerald-100 text-emerald-900 border-emerald-300",
+        cardStyle: "bg-gradient-to-br from-emerald-50 via-green-50/70 to-white border-emerald-200 hover:shadow-xl hover:shadow-emerald-500/15",
+        accentColor: "text-emerald-700",
+        links: [
+          {
+            label: "💚『 جل تعقيم 』💚",
+            url: "https://link.amazon/B018CsLMP",
+            btnStyle: "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md shadow-emerald-500/25"
+          }
+        ]
+      },
+      {
+        id: 9,
+        numText: "٩-",
+        icon: "🧦",
+        taskTitle: "مهمة الملابس",
+        badgeBg: "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-300",
+        cardStyle: "bg-gradient-to-br from-fuchsia-50 via-pink-50/70 to-white border-fuchsia-200 hover:shadow-xl hover:shadow-fuchsia-500/15",
+        accentColor: "text-fuchsia-700",
+        links: [
+          {
+            label: "🩷『 شراب 』🩷",
+            url: "https://link.amazon/B0hmAMOcF",
+            btnStyle: "bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white shadow-md shadow-fuchsia-500/25"
+          }
+        ]
+      },
+      {
+        id: 10,
+        numText: "١٠-",
+        icon: "🍼",
+        taskTitle: "مهمة الأطفال",
+        badgeBg: "bg-indigo-100 text-indigo-900 border-indigo-300",
+        cardStyle: "bg-gradient-to-br from-indigo-50 via-purple-50/70 to-white border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/15",
+        accentColor: "text-indigo-800",
+        links: [
+          {
+            label: "🍼 مهمة الأطفال — 💜『 محقن تغذية 』💜",
+            url: "https://link.amazon/B0hgKdU4c",
+            btnStyle: "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md shadow-indigo-500/25"
+          },
+          {
+            label: "🍼 مهمة الأطفال — 💗『 مناديل مبللة 』💗",
+            url: "https://link.amazon/B0dp3Myem",
+            btnStyle: "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25"
+          }
+        ]
+      }
+    ];
+
+    /**
+     * النص الكامل المنسق للنسخ السريع بنفس ترتيب المهام والروابط
+     */
+    const fullFormattedText = `يابخت اللي معاه مهام مش هيعرف ينام 😄🔥
+
+١- 🍳 مهمة المطبخ
+✨『 طواجن 』✨
+https://link.amazon/B0fKQVdOt
+
+٢- 🎀 مهمة التجميل
+💗『 توكة 』💗
+https://link.amazon/B08Cb8S1H
+
+٣- 💻 مهمة الكمبيوتر
+💙『 باد ماوس 』💙
+https://link.amazon/B05t2h4XN
+
+٤- 🎮 مهمة الألعاب
+💜『 صلصال 』💜
+https://link.amazon/B01y5Sjs7
+
+٥- 🧹 مهمة التنظيف
+🩵『 فوط سلك 』🩵
+https://link.amazon/B06aFDzLL
+https://link.amazon/B0fWEbUjz
+
+٦- 🖊️ مهمة المكتبة
+💛『 قلم 』💛
+https://link.amazon/B05f0NjZT
+
+٧- 🔌 مهمة الإلكترونيات
+❤️『 مشترك ثلاثي 』❤️
+https://link.amazon/B0bzv9BSO
+
+٨- 🧴 مهمة الصيدلية
+💚『 جل تعقيم 』💚
+https://link.amazon/B018CsLMP
+
+٩- 🧦 مهمة الملابس
+🩷『 شراب 』🩷
+https://link.amazon/B0hmAMOcF
+
+١٠- 🍼 مهمة الأطفال
+💜『 محقن تغذية 』💜
+https://link.amazon/B0hgKdU4c
+
+🍼 مهمة الأطفال
+💗『 مناديل مبللة 』💗
+https://link.amazon/B0dp3Myem`;
+
+    /**
+     * عرض رسالة تنبيه مؤقتة داخل الصفحة بدون استخدام alert()
+     */
+    function showBannerMessage(message, isError = false) {
+      const banner = document.getElementById("statusBanner");
+      if (!banner) return;
+
+      banner.textContent = message;
+      banner.className = isError
+        ? "mt-2 px-4 py-2 rounded-2xl text-sm font-bold border bg-rose-50 text-rose-700 border-rose-200 block"
+        : "mt-2 px-4 py-2 rounded-2xl text-sm font-bold border bg-emerald-50 text-emerald-700 border-emerald-200 block";
+
+      clearTimeout(window.__bannerTimer);
+      window.__bannerTimer = setTimeout(() => {
+        banner.classList.add("hidden");
+      }, 3200);
+    }
+
+    /**
+     * نسخ النص الكامل إلى الحافظة مع دعم بديل متوافق مع الإطارات المدمجة (iFrame)
+     */
+    function copyFormattedTasks() {
+      try {
+        const tempTextArea = document.createElement("textarea");
+        tempTextArea.value = fullFormattedText;
+        tempTextArea.setAttribute("readonly", "");
+        tempTextArea.style.position = "fixed";
+        tempTextArea.style.opacity = "0";
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        tempTextArea.setSelectionRange(0, tempTextArea.value.length);
+
+        const successful = document.execCommand("copy");
+        document.body.removeChild(tempTextArea);
+
+        if (successful) {
+          const btnText = document.getElementById("copyBtnText");
+          const copyIcon = document.getElementById("copyIcon");
+          if (btnText && copyIcon) {
+            const originalText = btnText.textContent;
+            const originalIcon = copyIcon.textContent;
+            btnText.textContent = "تم نسخ النص الكامل بنجاح!";
+            copyIcon.textContent = "✅";
+            setTimeout(() => {
+              btnText.textContent = originalText;
+              copyIcon.textContent = originalIcon;
+            }, 2200);
+          }
+          showBannerMessage("تم نسخ قائمة المهام والروابط بالكامل وجاهزة للصق!");
+        } else {
+          showBannerMessage("تعذر النسخ تلقائياً، يمكنك تحديد النص يدوياً.", true);
+        }
+      } catch (err) {
+        showBannerMessage("حدث خطأ أثناء محاولة النسخ.", true);
+      }
+    }
+
+    /**
+     * بناء كروت المهام داخل شبكة الصفحة
+     */
+    function renderTasks() {
+      const grid = document.getElementById("tasksGrid");
+      if (!grid) return;
+
+      try {
+        grid.innerHTML = "";
+
+        tasksData.forEach((task, index) => {
+          const card = document.createElement("article");
+          card.className = `task-card rounded-3xl border-2 p-5 sm:p-6 shadow-sm flex flex-col justify-between gap-4 ${task.cardStyle}`;
+
+          // رأس الكارت: الرقم + الأيقونة المتحركة + اسم المهمة
+          const headerDiv = document.createElement("div");
+          headerDiv.className = "flex items-center justify-between gap-3";
+
+          const titleGroup = document.createElement("div");
+          titleGroup.className = "flex items-center gap-3";
+
+          const iconSpan = document.createElement("span");
+          iconSpan.className = "animate-float-icon text-3xl sm:text-4xl select-none";
+          iconSpan.style.animationDelay = `${(index * 0.22).toFixed(2)}s`;
+          iconSpan.textContent = task.icon;
+
+          const textWrap = document.createElement("div");
+          const numSpan = document.createElement("span");
+          numSpan.className = `text-base sm:text-lg font-extrabold ml-1.5 ${task.accentColor}`;
+          numSpan.textContent = task.numText;
+
+          const h3 = document.createElement("h3");
+          h3.className = "inline text-xl sm:text-2xl font-extrabold text-slate-900";
+          h3.textContent = task.taskTitle;
+
+          textWrap.appendChild(numSpan);
+          textWrap.appendChild(h3);
+
+          titleGroup.appendChild(iconSpan);
+          titleGroup.appendChild(textWrap);
+
+          const badge = document.createElement("span");
+          badge.className = `text-xs font-bold px-3 py-1 rounded-full border shrink-0 ${task.badgeBg}`;
+          badge.textContent = task.links.length > 1 ? `${task.links.length} روابط` : "رابط واحد";
+
+          headerDiv.appendChild(titleGroup);
+          headerDiv.appendChild(badge);
+
+          // حاوية أزرار الروابط القابلة للنقر
+          const linksContainer = document.createElement("div");
+          linksContainer.className = "flex flex-col gap-2.5 pt-1";
+
+          task.links.forEach((item) => {
+            const anchor = document.createElement("a");
+            anchor.href = item.url;
+            anchor.target = "_blank";
+            anchor.rel = "noopener noreferrer";
+            anchor.className = `link-btn w-full rounded-2xl px-4 py-3.5 flex items-center justify-between gap-3 font-bold text-sm sm:text-base ${item.btnStyle}`;
+
+            const labelSpan = document.createElement("span");
+            labelSpan.className = "text-right leading-snug";
+            labelSpan.textContent = item.label;
+
+            const actionSpan = document.createElement("span");
+            actionSpan.className = "shrink-0 inline-flex items-center gap-1 text-xs sm:text-sm bg-black/15 px-3 py-1 rounded-xl";
+            actionSpan.innerHTML = '<span>فتح اللينك</span><span aria-hidden="true">↗</span>';
+
+            anchor.appendChild(labelSpan);
+            anchor.appendChild(actionSpan);
+            linksContainer.appendChild(anchor);
+          });
+
+          card.appendChild(headerDiv);
+          card.appendChild(linksContainer);
+          grid.appendChild(card);
+        });
+      } catch (error) {
+        grid.innerHTML = `
+          <div class="col-span-full rounded-3xl bg-rose-50 border border-rose-200 p-6 text-center text-rose-700 font-bold">
+            حدث خطأ أثناء تحميل قائمة المهام. يرجى تحديث الصفحة.
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", renderTasks);
+  </script>
+</body>
+</html>
