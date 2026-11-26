@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>قائمة المهام والمشتريات ✨</title>
+  <title>قائمة المهام 💜✨</title>
   <style>
     :root {
-      --bg1: #fff5f8;
-      --bg2: #f2f8ff;
-      --bg3: #f6fff8;
-      --card: #ffffff;
-      --text: #222638;
-      --muted: #646b82;
-      --accent: #ff5d8f;
-      --accent2: #5b7cfa;
-      --border: #eceff8;
-      --shadow: 0 12px 30px rgba(45, 55, 95, 0.08);
+      --mauve-deep: #3b1d5e;
+      --mauve-dark: #5a2d82;
+      --mauve-mid: #7e4ba6;
+      --mauve-soft: #b892d6;
+      --mauve-light: #efe5f8;
+      --mauve-pale: #f8f3fc;
+      --text-main: #291342;
+      --text-muted: #5e3d82;
     }
 
     * {
@@ -26,390 +24,548 @@
 
     body {
       font-family: "Tajawal", "Cairo", system-ui, -apple-system, sans-serif;
-      color: var(--text);
+      color: var(--text-main);
       min-height: 100vh;
-      padding: 28px 16px 50px;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
-      background-size: 240% 240%;
-      animation: bgShift 14s ease infinite;
-    }
-
-    @keyframes bgShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      padding: 24px 12px 56px;
+      background: linear-gradient(140deg, #e9d8f7 0%, #d8bdf0 45%, #c7a4e8 100%);
+      overflow-x: hidden;
     }
 
     .container {
-      max-width: 780px;
+      width: 100%;
+      max-width: 720px;
       margin: 0 auto;
     }
 
-    .header {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 24px 20px;
-      box-shadow: var(--shadow);
+    /* الهيدر: بيتين الشعر + قائمة المهام */
+    .header-frame {
+      border-radius: 26px;
+      padding: 3px;
+      background: linear-gradient(120deg, #4a2370, #8a56b8, #c49ee6, #5c2d8a);
+      background-size: 240% 240%;
+      animation: softBorder 9s ease infinite;
+      box-shadow: 0 10px 26px rgba(59, 29, 94, 0.18);
       margin-bottom: 24px;
     }
 
-    .header h1 {
-      font-size: 1.7rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #ff4d8d, #7c5dfa, #0096c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
+    .header-box {
+      background: linear-gradient(160deg, #fbf7ff 0%, #f1e5fc 100%);
+      border-radius: 23px;
+      padding: 22px 14px 20px;
+      text-align: center;
+      overflow: hidden;
     }
 
-    .header p {
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .task-card {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 18px 20px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .task-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 34px rgba(45, 55, 95, 0.12);
-    }
-
-    .task-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 2px dashed #f0f2fa;
-    }
-
-    .anim-emoji {
-      display: inline-block;
-      font-size: 1.35rem;
-      animation: popBounce 2.4s ease-in-out infinite;
-    }
-
-    .task-card:nth-child(even) .anim-emoji {
-      animation-name: gentleWiggle;
-      animation-duration: 2.8s;
-    }
-
-    @keyframes popBounce {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-4px) scale(1.12); }
-    }
-
-    @keyframes gentleWiggle {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-9deg) scale(1.08); }
-      75% { transform: rotate(9deg) scale(1.08); }
-    }
-
-    .items {
-      list-style: none;
+    .poem {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-
-    .item-row {
-      display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: #fafbff;
-      border: 1px solid #eef1fb;
+      margin-bottom: 18px;
+      width: 100%;
     }
 
-    .item-name {
-      font-weight: 700;
-      font-size: 0.98rem;
-      color: var(--text);
-    }
-
-    .badge-alt {
+    /* السطر الأول مضغوط في سطر واحد بدون خروج أو نزول كلمة */
+    .poem-line-first {
       display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #fff0f6;
-      color: #d6336c;
-      margin-right: 6px;
-    }
-
-    .btn-link {
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #ffffff;
-      background: linear-gradient(135deg, #ff5d8f, #7b61ff);
-      padding: 7px 14px;
-      border-radius: 12px;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .btn-link:hover {
-      opacity: 0.92;
-      transform: scale(1.03);
-    }
-
-    /* ألوان لطيفة لكل كارت */
-    .c-kitchen .task-title { color: #d9480f; }
-    .c-library .task-title { color: #5f3dc4; }
-    .c-computer .task-title { color: #1864ab; }
-    .c-kids .task-title { color: #c2255c; }
-    .c-elec .task-title { color: #0b7285; }
-    .c-clean .task-title { color: #2b8a3e; }
-    .c-beauty .task-title { color: #a61e4d; }
-    .c-toys .task-title { color: #e67700; }
-    .c-clothes .task-title { color: #6741d9; }
-    .c-pharmacy .task-title { color: #099268; }
-
-    .footer-note {
-      margin-top: 24px;
-      text-align: center;
-      background: linear-gradient(120deg, #fff0f6, #edf2ff, #e6fcf5);
-      border: 2px solid #ffd6e7;
-      border-radius: 20px;
-      padding: 18px 20px;
-      box-shadow: var(--shadow);
-      font-size: 1.08rem;
+      font-size: clamp(0.84rem, 3.65vw, 1.22rem);
       font-weight: 800;
-      color: #2b2d42;
-      display: flex;
+      color: var(--mauve-deep);
+      line-height: 1.55;
+      white-space: nowrap;
+      letter-spacing: -0.04em;
+      transform: scaleX(0.92);
+      transform-origin: center;
+      max-width: 100%;
+    }
+
+    /* السطر الثاني موسع ليماثل مساحة السطر الأول */
+    .poem-line-second {
+      display: inline-block;
+      font-size: clamp(0.88rem, 3.85vw, 1.26rem);
+      font-weight: 800;
+      color: var(--mauve-deep);
+      line-height: 1.55;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      transform: scaleX(1.06);
+      transform-origin: center;
+      max-width: 100%;
+    }
+
+    .divider-line {
+      width: 140px;
+      height: 3px;
+      margin: 0 auto 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, #8a56b8, transparent);
+    }
+
+    .main-heading {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--mauve-dark);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
     }
 
-    .footer-emoji {
+    @keyframes softBorder {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* قائمة المهام */
+    .tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .task-frame {
+      border-radius: 24px;
+      padding: 2.5px;
+      background: var(--frame-bg);
+      background-size: 220% 220%;
+      animation: softBorder 10s ease infinite, gentleFloat 5.5s ease-in-out infinite;
+      box-shadow: 0 8px 22px rgba(59, 29, 94, 0.13);
+    }
+
+    .tasks-list .task-frame:nth-child(even) {
+      animation-delay: -2.7s;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .task-card {
+      border-radius: 21.5px;
+      padding: 18px 12px;
+      background: var(--card-bg);
+      overflow: hidden;
+    }
+
+    /* اسم المهمة في سطر لوحده */
+    .task-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.24rem;
+      font-weight: 900;
+      color: var(--title-color);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      padding-right: 4px;
+      border-bottom: 1.5px dashed rgba(90, 45, 130, 0.25);
+    }
+
+    .products {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* اسم المنتج .... اللينك داخل حدود المربع تماماً */
+    .product-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 10px 10px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(126, 75, 166, 0.22);
+      transition: transform 0.2s ease, background 0.2s ease;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .product-row:hover {
+      transform: translateX(-2px);
+      background: #ffffff;
+    }
+
+    .product-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: clamp(0.86rem, 3.3vw, 1.02rem);
+      font-weight: 800;
+      color: var(--text-main);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* نقط قصيرة ومرنة تمنع خروج زر اللينك عن البرواز */
+    .dots-spacer {
+      flex: 0 1 34px;
+      max-width: 34px;
+      min-width: 8px;
+      border-bottom: 2px dotted rgba(126, 75, 166, 0.42);
+      margin: 0 2px;
+    }
+
+    .product-link {
+      text-decoration: none;
+      font-size: clamp(0.78rem, 2.9vw, 0.88rem);
+      font-weight: 800;
+      color: #ffffff;
+      background: linear-gradient(135deg, #5a2d82, #854db5);
+      padding: 6px 12px;
+      border-radius: 999px;
+      box-shadow: 0 3px 10px rgba(90, 45, 130, 0.24);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .product-link:hover {
+      opacity: 0.92;
+      transform: scale(1.03);
+    }
+
+    /* حركة ناعمة ومريحة للعين للإيموجيز */
+    .emo {
       display: inline-block;
-      font-size: 1.45rem;
-      animation: gentleWiggle 2.2s ease-in-out infinite;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .emo-lg { font-size: 1.38rem; }
+    .emo-md { font-size: 1.12rem; }
+
+    .soft-bob {
+      animation: softBob 3.2s ease-in-out infinite;
+    }
+
+    .soft-tilt {
+      animation: softTilt 3.6s ease-in-out infinite;
+    }
+
+    @keyframes softBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    @keyframes softTilt {
+      0%, 100% { transform: rotate(0deg); }
+      35% { transform: rotate(-7deg); }
+      70% { transform: rotate(7deg); }
+    }
+
+    /* تدرجات الموف الغامق والفاتح للكروت */
+    .v-1 {
+      --frame-bg: linear-gradient(135deg, #4a2370, #9d6cc9, #5c2d8a);
+      --card-bg: linear-gradient(160deg, #faf5ff, #efe3fa);
+      --title-color: #421d66;
+    }
+
+    .v-2 {
+      --frame-bg: linear-gradient(135deg, #5e308c, #b287db, #6e3ba1);
+      --card-bg: linear-gradient(160deg, #f8f2fe, #eadbf8);
+      --title-color: #4f2578;
+    }
+
+    .v-3 {
+      --frame-bg: linear-gradient(135deg, #3f1c63, #8f5ec0, #552882);
+      --card-bg: linear-gradient(160deg, #fbf7ff, #f2e7fc);
+      --title-color: #3b195e;
+    }
+
+    .v-4 {
+      --frame-bg: linear-gradient(135deg, #6b389c, #be96e3, #52267d);
+      --card-bg: linear-gradient(160deg, #f9f4fe, #ece0f8);
+      --title-color: #542880;
+    }
+
+    .v-5 {
+      --frame-bg: linear-gradient(135deg, #4e2478, #a677d1, #673596);
+      --card-bg: linear-gradient(160deg, #faf6ff, #ede0f9);
+      --title-color: #461f6e;
+    }
+
+    /* الفوتر النهائي */
+    .footer-frame {
+      margin-top: 26px;
+      border-radius: 24px;
+      padding: 2.5px;
+      background: linear-gradient(120deg, #4a2370, #9d6cc9, #5c2d8a);
+      background-size: 220% 220%;
+      animation: softBorder 9s ease infinite;
+      box-shadow: 0 8px 22px rgba(59, 29, 94, 0.16);
+    }
+
+    .footer-box {
+      background: linear-gradient(160deg, #f7effe, #eadbf8);
+      border-radius: 21.5px;
+      padding: 20px 16px;
+      text-align: center;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--mauve-deep);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>✨ قائمة المهام والمشتريات ✨</h1>
-      <p>كل مهمة وروابطها الجاهزة مرتبة ومضبوطة</p>
-    </div>
-
-    <div class="grid">
-      <!-- 1. المطبخ -->
-      <section class="task-card c-kitchen">
-        <div class="task-title">
-          <span class="anim-emoji">🍳</span>
-          <span>مهمة المطبخ</span>
+    <header class="header-frame">
+      <div class="header-box">
+        <div class="poem">
+          <div class="poem-line-first">يابختك ياللي معاك مهام ... مش هتعرف تنام 💜</div>
+          <div class="poem-line-second">اشتري من اللينكات التمام .. بسرعه قوام ✨</div>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">طواجن</span>
-            <a class="btn-link" href="https://link.amazon/B07BuScwF" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> سلة صغيرة</span>
-            <a class="btn-link" href="https://link.amazon/B01dELf6z" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">إضافي</span> أكياس تغطية بلاستيك</span>
-            <a class="btn-link" href="https://link.amazon/B0hXhPOwd" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
+        <div class="divider-line"></div>
+        <h1 class="main-heading">
+          <span class="emo emo-lg soft-bob">📝</span>
+          <span>قائمه المهام</span>
+          <span class="emo emo-lg soft-tilt">💜</span>
+        </h1>
+      </div>
+    </header>
+
+    <main class="tasks-list">
+      <!-- 1. مهمة المطبخ -->
+      <section class="task-frame v-1">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-bob">🍳</span>
+            <span>مهمة المطبخ</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🍲</span> طواجن</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B07BuScwF" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">🧺</span> سلة صغيرة</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B01dELf6z" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🛍️</span> أكياس تغطية بلاستيك</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0hXhPOwd" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
+        </div>
       </section>
 
-      <!-- 2. المكتبة -->
-      <section class="task-card c-library">
-        <div class="task-title">
-          <span class="anim-emoji">📚</span>
-          <span>مهمة المكتبة</span>
+      <!-- 2. مهمة المكتبة -->
+      <section class="task-frame v-2">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-tilt">📚</span>
+            <span>مهمة المكتبة</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">✏️</span> قلم</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0dHnyvE1" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">قلم</span>
-            <a class="btn-link" href="https://link.amazon/B0dHnyvE1" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 3. الكمبيوتر -->
-      <section class="task-card c-computer">
-        <div class="task-title">
-          <span class="anim-emoji">💻</span>
-          <span>مهمة الكمبيوتر</span>
+      <!-- 3. مهمة الكمبيوتر -->
+      <section class="task-frame v-3">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-bob">💻</span>
+            <span>مهمة الكمبيوتر</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🖱️</span> باد ماوس</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0i1KZu2U" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">⌨️</span> استيكر الكيبورد</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0h3gdbwu" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">باد ماوس</span>
-            <a class="btn-link" href="https://link.amazon/B0i1KZu2U" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> استيكر الكيبورد</span>
-            <a class="btn-link" href="https://link.amazon/B0h3gdbwu" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 4. الأطفال -->
-      <section class="task-card c-kids">
-        <div class="task-title">
-          <span class="anim-emoji">🍼</span>
-          <span>مهمة الأطفال</span>
+      <!-- 4. مهمة الأطفال -->
+      <section class="task-frame v-4">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-tilt">🍼</span>
+            <span>مهمة الأطفال</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">👶</span> محقن تغذية</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0ef9s1VX" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🧻</span> مناديل مبللة للأطفال</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0fY6Umky" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">محقن تغذية</span>
-            <a class="btn-link" href="https://link.amazon/B0ef9s1VX" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> مناديل مبللة للأطفال</span>
-            <a class="btn-link" href="https://link.amazon/B0fY6Umky" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 5. الإلكترونيات -->
-      <section class="task-card c-elec">
-        <div class="task-title">
-          <span class="anim-emoji">🔌</span>
-          <span>مهمة الإلكترونيات</span>
+      <!-- 5. مهمة الإلكترونيات -->
+      <section class="task-frame v-5">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-bob">🔌</span>
+            <span>مهمة الإلكترونيات</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🔋</span> بطاريات</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B00MZG5Y8" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">⚡</span> مشترك ثلاثي</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B08vEOiWA" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">بطاريات</span>
-            <a class="btn-link" href="https://link.amazon/B00MZG5Y8" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> مشترك ثلاثي</span>
-            <a class="btn-link" href="https://link.amazon/B08vEOiWA" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 6. التنظيف -->
-      <section class="task-card c-clean">
-        <div class="task-title">
-          <span class="anim-emoji">🧹</span>
-          <span>مهمة التنظيف</span>
+      <!-- 6. مهمة التنظيف -->
+      <section class="task-frame v-1">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-tilt">🧹</span>
+            <span>مهمة التنظيف</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">🧻</span> ٤ فوط تنظيف</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0b9ftLfr" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🫧</span> ٣ فوط تنظيف</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0dT6soA6" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">🧽</span> فرشاة تنظيف</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0cKRZBFU" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">٤ فوط تنظيف</span>
-            <a class="btn-link" href="https://link.amazon/B0b9ftLfr" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> ٣ فوط تنظيف</span>
-            <a class="btn-link" href="https://link.amazon/B0dT6soA6" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">خيار ثالث</span> فرشاة تنظيف</span>
-            <a class="btn-link" href="https://link.amazon/B0cKRZBFU" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 7. التجميل -->
-      <section class="task-card c-beauty">
-        <div class="task-title">
-          <span class="anim-emoji">💄</span>
-          <span>مهمة التجميل</span>
+      <!-- 7. مهمة التجميل -->
+      <section class="task-frame v-2">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-bob">💄</span>
+            <span>مهمة التجميل</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🎀</span> توكة</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0ibT9aVZ" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">👑</span> توكة ٢</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B09lbixie" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🧴</span> كريم شعر</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B01w1PacZ" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">توكة</span>
-            <a class="btn-link" href="https://link.amazon/B0ibT9aVZ" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name">توكة ٢</span>
-            <a class="btn-link" href="https://link.amazon/B09lbixie" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name">كريم شعر</span>
-            <a class="btn-link" href="https://link.amazon/B01w1PacZ" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 8. الألعاب -->
-      <section class="task-card c-toys">
-        <div class="task-title">
-          <span class="anim-emoji">🎨</span>
-          <span>مهمة الألعاب</span>
+      <!-- 8. مهمة الألعاب -->
+      <section class="task-frame v-3">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-tilt">🎨</span>
+            <span>مهمة الألعاب</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">🧸</span> صلصال</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0j8jqcVI" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🖍️</span> كراسة التلوين</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0gEeZlbA" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">صلصال</span>
-            <a class="btn-link" href="https://link.amazon/B0j8jqcVI" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> كراسة التلوين</span>
-            <a class="btn-link" href="https://link.amazon/B0gEeZlbA" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 9. الملابس -->
-      <section class="task-card c-clothes">
-        <div class="task-title">
-          <span class="anim-emoji">🧦</span>
-          <span>مهمة الملابس</span>
+      <!-- 9. مهمة الملابس -->
+      <section class="task-frame v-4">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-bob">🧦</span>
+            <span>مهمة الملابس</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-tilt">🧦</span> شراب</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0f5HtEWr" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">✨</span> شراب شفاف</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0gDaVUcX" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">شراب</span>
-            <a class="btn-link" href="https://link.amazon/B0f5HtEWr" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-          <li class="item-row">
-            <span class="item-name"><span class="badge-alt">أو</span> شراب شفاف</span>
-            <a class="btn-link" href="https://link.amazon/B0gDaVUcX" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
 
-      <!-- 10. الصيدلية -->
-      <section class="task-card c-pharmacy">
-        <div class="task-title">
-          <span class="anim-emoji">🧴</span>
-          <span>مهمة الصيدلية</span>
+      <!-- 10. مهمة الصيدلية -->
+      <section class="task-frame v-5">
+        <div class="task-card">
+          <div class="task-name">
+            <span class="emo emo-lg soft-tilt">🧴</span>
+            <span>مهمة الصيدلية</span>
+          </div>
+          <ul class="products">
+            <li class="product-row">
+              <span class="product-title"><span class="emo emo-md soft-bob">🧼</span> جل معقم</span>
+              <span class="dots-spacer"></span>
+              <a class="product-link" href="https://link.amazon/B0iu0JwAh" target="_blank" rel="noopener noreferrer">اللينك 💜</a>
+            </li>
+          </ul>
         </div>
-        <ul class="items">
-          <li class="item-row">
-            <span class="item-name">جل معقم</span>
-            <a class="btn-link" href="https://link.amazon/B0iu0JwAh" target="_blank" rel="noopener noreferrer">فتح المنتج 🔗</a>
-          </li>
-        </ul>
       </section>
-    </div>
+    </main>
 
-    <div class="footer-note">
-      <span class="footer-emoji">🤝</span>
-      <span>لو مش متوفر اي منتج قولي وانا اساعدك</span>
-      <span class="footer-emoji">✨</span>
-    </div>
+    <footer class="footer-frame">
+      <div class="footer-box">
+        <span class="emo emo-lg soft-tilt">🤝</span>
+        <span>لو مش متوفر اي منتج قولي وانا اساعدك</span>
+        <span class="emo emo-lg soft-bob">✨</span>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
